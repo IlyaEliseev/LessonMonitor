@@ -1,3 +1,4 @@
+using LessonMonitor.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,6 +51,22 @@ namespace LessonMonitor.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<RequestLogsMiddleware>();
+
+            //app.Use(async (httpContext, next) =>
+            //{
+            //    var request = httpContext.Request.HttpContext.Request;
+
+            //    var requestInfo = $"Time: {DateTime.Now} " +
+            //                      $"Protocol: {request.Protocol} " +
+            //                      $"HttpMethod: {request.Method} " +
+            //                      $"Path: {request.Path} " +
+            //                      $"Query: {request.QueryString}";
+
+            //    File.AppendAllText("AppLogs.log", requestInfo + Environment.NewLine);
+            //    await next();
+            //});
 
             app.UseEndpoints(endpoints =>
             {
